@@ -6,7 +6,7 @@ import { account } from "~/appwrite/client";
 export async function clientLoader() {
     try {
         const user = await account.get();
-
+        
         if(user.$id) return redirect('/');
     }catch(e){
         console.log("Error in clientLoader:", e);
@@ -15,7 +15,6 @@ export async function clientLoader() {
 
 const signIn = () => {
 
-   
   return (
     <main className="auth">
       <section className="size-full glassmorphism flex-center px-6">

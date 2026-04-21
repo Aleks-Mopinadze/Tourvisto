@@ -120,6 +120,7 @@ export const getAllUsers = async (limit: number, offset: number) => {
             ]
         })
 
+
         if(total === 0) return { users: [], total };
 
         return { users, total };

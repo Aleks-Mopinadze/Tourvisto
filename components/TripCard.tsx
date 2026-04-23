@@ -29,7 +29,7 @@ const TripCard = ({
       </article>
 
 
-      <div className="mt-5 pl-[18px] pr-3.5 pb-5">
+      <div className="mt-1 pl-[18px] pr-3.5 pb-5">
         <ChipListComponent id="travel-chip">
           <ChipsDirective>
             {

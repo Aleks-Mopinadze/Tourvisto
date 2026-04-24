@@ -1,5 +1,10 @@
+import { ButtonComponent } from "@syncfusion/ej2-react-buttons"
+import { useNavigate } from "react-router";
+import { logoutUser } from "~/appwrite/auth";
 
 const travelPage = () => {
+
+    const navigate = useNavigate();
     const socials = [
         {
             name: 'LinkedIn',
@@ -12,6 +17,11 @@ const travelPage = () => {
             icon: '/assets/icons/github.svg'
         }
     ]
+
+    const handleLogOut = async () => {
+        await logoutUser();
+        navigate('/sign-in');
+    }
 
   return (
     
@@ -44,6 +54,11 @@ const travelPage = () => {
                             }
                         </ul>
                     </div>
+                </div>
+            </div>
+            <div>
+                <div className="mt-5 flex justify-center ">
+                    <ButtonComponent cssClass="bg-red-500! text-white!" onClick={handleLogOut}>Log Out</ButtonComponent>
                 </div>
             </div>
             </div>

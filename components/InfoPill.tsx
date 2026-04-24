@@ -1,5 +1,4 @@
 
-
 const InfoPill = ({text, image}: InfoPillProps) => {
 
   return (

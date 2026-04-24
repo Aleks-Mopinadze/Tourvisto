@@ -1,8 +1,9 @@
+import { Outlet } from "react-router"
 
 const pageLayout = () => {
   return (
     <div>
-      Page Layout
+      <Outlet/>
     </div>
   )
 }

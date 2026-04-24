@@ -4,11 +4,9 @@ import type { Route } from "./+types/dashboard"
 import { getTripsByTravelStyle, getUserGrowthPerDay, getUsersAndTripsStats } from "~/appwrite/dashboard";
 import { getAllTrips } from "~/appwrite/trips";
 import { parseTripData } from "~/lib/utils";
-import { Category, ChartComponent, ColumnsDirective, ColumnSeries, DataLabel, Inject, SeriesCollectionDirective, SeriesDirective, SplineAreaSeries, Tooltip } from "@syncfusion/ej2-react-charts";
+import { Category, ChartComponent, ColumnsDirective, ColumnSeries, DataLabel, Inject, Legend, SeriesCollectionDirective, SeriesDirective, SplineAreaSeries, Tooltip } from "@syncfusion/ej2-react-charts";
 import { tripXAxis, tripyAxis, userXAxis, useryAxis } from "~/constants";
 import { ColumnDirective, GridComponent } from "@syncfusion/ej2-react-grids";
-
-
 
 
 export async function clientLoader() {
@@ -44,10 +42,12 @@ const Dashboard = ({loaderData}: Route.ComponentProps) => {
     const {dashboardStats, allTrips, userGrowth, tripsByTravelStyle, allUsers} = loaderData
 
     const trips = allTrips.map((trip) => ({
-        imgageUrl: trip.imageUrls[0],
+        imageUrl: trip.imageUrls[0],
         name: trip.name,
         interests: trip.interests
     }))
+
+    console.log(tripsByTravelStyle)
 
     const usersAndTrips = [
         {
@@ -59,7 +59,7 @@ const Dashboard = ({loaderData}: Route.ComponentProps) => {
         {
             title: 'Trips Based on interests',
             dataSource: trips,
-            field: 'interest',
+            field: 'interests',
             headerText: 'Interests'
         }
     ]
@@ -124,7 +124,7 @@ const Dashboard = ({loaderData}: Route.ComponentProps) => {
                 title='User Growth'
                 tooltip={{enable: true}}
             >
-                <Inject services={[ColumnSeries, SplineAreaSeries, Category, DataLabel, Tooltip]} />
+                <Inject services={[ColumnSeries, Legend, SplineAreaSeries, Category, DataLabel, Tooltip]} />
 
                 <SeriesCollectionDirective>
                     <SeriesDirective
@@ -156,12 +156,12 @@ const Dashboard = ({loaderData}: Route.ComponentProps) => {
                 title='Trip Trends'
                 tooltip={{enable: true}}
             >
-                <Inject services={[ColumnSeries, SplineAreaSeries, Category, DataLabel, Tooltip]} />
+                <Inject services={[ColumnSeries, Legend, SplineAreaSeries, Category, DataLabel, Tooltip]} />
 
                 <SeriesCollectionDirective>
                     <SeriesDirective
                         dataSource={tripsByTravelStyle}
-                        xName="Travel Style"
+                        xName="travelStyle"
                         yName="count"
                         type="Column"
                         name='Day'
@@ -173,39 +173,37 @@ const Dashboard = ({loaderData}: Route.ComponentProps) => {
 
         </section>
 
-        <section className="user-trip wrapper">
-            {
-                usersAndTrips.map(({title, dataSource, headerText, field}, i) => (
+       <section className="user-trip wrapper">
+                {usersAndTrips.map(({ title, dataSource, field, headerText}, i) => (
                     <div key={i} className="flex flex-col gap-5">
                         <h3 className="p-20-semibold text-dark-100">{title}</h3>
 
-                            <GridComponent dataSource={dataSource} gridLines="None">
-                                <ColumnsDirective>
-                                    <ColumnDirective
-                                                field="name"
-                                                headerText="Name"
-                                                width="200"
-                                                textAlign="Left"
-                                                template={(props: UserData) => (
-                                                    <div className="flex items-center gap-1.5 px-4">
-                                                        <img src={props.imageUrl} alt="user" referrerPolicy="no-referrer" className="rounded-full size-8 aspect-square" />
-                                                        <span>{props.name}</span>
-                                                    </div>
-                                                )}
-                                    />
+                        <GridComponent dataSource={dataSource} gridLines="None">
+                            <ColumnsDirective>
+                                <ColumnDirective
+                                    field="name"
+                                    headerText="Name"
+                                    width="200"
+                                    textAlign="Left"
+                                    template={(props: UserData) => (
+                                        <div className="flex items-center gap-1.5 px-4">
+                                            <img src={props.imageUrl} alt="user" className="rounded-full size-8 aspect-square" referrerPolicy="no-referrer" />
+                                            <span>{props.name}</span>
+                                        </div>
+                                    )}
+                                />
 
-                                     <ColumnDirective
-                                                field={field}
-                                                headerText={headerText}
-                                                width="150"
-                                                textAlign="Left"
-                                    />
-                                </ColumnsDirective>
-                            </GridComponent>
+                                <ColumnDirective
+                                    field={field}
+                                    headerText={headerText}
+                                    width="150"
+                                    textAlign="Left"
+                                />
+                            </ColumnsDirective>
+                        </GridComponent>
                     </div>
-                ))
-            }
-        </section>
+                ))}
+            </section>
         </main>
     )
 }

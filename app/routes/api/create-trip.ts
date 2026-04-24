@@ -46,7 +46,7 @@ export const action = async ({request}: ActionFunction) => {
       '🌦️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
       '🌧️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
       '❄️ Season: temperature range in Celsius (temperature range in Fahrenheit)'
-    ],
+    ], 
     "location": {
       "city": "name of the city or region",
       "coordinates": [latitude, longitude],
@@ -66,6 +66,9 @@ export const action = async ({request}: ActionFunction) => {
 
         const textResult = await genAi.getGenerativeModel({model: 'gemini-2.5-flash'}).generateContent([prompt])
         const trip = parseMarkdownToJson(textResult.response.text())
+        if(trip === null){
+          throw new Error('Something went wrong while generating the trip')
+        }
 
         const imageResponse = await fetch(`https://api.unsplash.com/search/photos?query=${country} ${interests} ${travelStyle}&client_id=${unsplashApiKey}`);
 
